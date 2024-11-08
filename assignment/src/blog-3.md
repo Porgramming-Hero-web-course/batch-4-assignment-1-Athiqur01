@@ -47,16 +47,27 @@ makeSound(new Cat());
 3. in Operator Type Guard:
 The in operator checks if a specific property exists on an object. This is especially useful with complex objects that share some but not all properties.
 Example:
-type Circle = { shape: "circle"; radius: number };
-type Rectangle = { shape: "rectangle"; width: number; height: number };
+type CircleArea = { shape: 'circle';
+     radius: number ; };
 
-function calculateArea(shape: Circle | Rectangle) {
+type RectangleArea = { shape: 'rectangle'; 
+     width: number ; 
+     height: number ; };
+
+type Shape = CircleArea | RectangleArea;
+
+const calculateShapeArea = (shape: Shape): number => {
+    
     if ("radius" in shape) {
         return Math.PI * shape.radius ** 2;
     } else if ("width" in shape && "height" in shape) {
         return shape.width * shape.height;
     }
-}
+    
+    throw new Error("Invalid shape type");
+};
 
-console.log(calculateArea({ shape: "circle", radius: 5 }));      
-console.log(calculateArea({ shape: "rectangle", width: 4, height: 6 })); 
+// Sample Input
+const circleArea = calculateShapeArea({ shape: "circle", radius: 5 });
+const rectangleArea = calculateShapeArea({ shape: "rectangle", width: 4, height: 6 });
+
